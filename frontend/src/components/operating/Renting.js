@@ -22,7 +22,7 @@ function Information({ room, handleStatusChanged, updateRoomInformation, handleC
   return (
     <div className="col-4 overflow-auto" style={{ height: "90vh" }}>
       <div className="row g-3">
-        <RoomInformation room={room} updateRoomInformation={updateRoomInformation} handleCheckoutRoom={handleCheckoutRoom} handleStatusChanged={handleStatusChanged}/>
+        <RoomInformation room={room} updateRoomInformation={updateRoomInformation} handleCheckoutRoom={handleCheckoutRoom} handleStatusChanged={handleStatusChanged} />
         <OrderInformation room={room} handleStatusChanged={handleStatusChanged} />
         <CustomerInformation room={room} />
       </div>
@@ -39,8 +39,8 @@ export default function Renting() {
   let timerIDs = new Map();
 
   useState(() => {
-      backendApi.Room.getAll().then(data => setRoomList(data.rooms)).catch(error => {
-      })
+    backendApi.Room.getAll().then(data => setRoomList(data.rooms)).catch(error => {
+    })
   }, []);
 
   const handleStatusChanged = (newStatus) => {
@@ -61,12 +61,12 @@ export default function Renting() {
     backendApi.Room.checkIn(room.fullName).then(data => {
       const changedRoom = data.room;
       const rooms = roomList.map(r => {
-        if(r.fullName === changedRoom.fullName) {
+        if (r.fullName === changedRoom.fullName) {
           return changedRoom;
         } else {
           return r;
         }
-        
+
       });
       const id = setInterval(updateFeeOfRoom(room.fullName), 900000);
       timerIDs.set(room.fullName, id);
@@ -79,13 +79,11 @@ export default function Renting() {
   const handleCheckoutRoom = (room) => {
     backendApi.Room.checkout(room.fullName).then(data => {
       const rooms = roomList.map(r => {
-        if(r.fullName === data.room.fullName) {
+        if (r.fullName === data.room.fullName) {
           return data.room;
         } else {
           return r;
         }
-      }).catch(error => {
-      
       })
 
       const id = timerIDs.get(room.fullName);
@@ -101,13 +99,11 @@ export default function Renting() {
     backendApi.Room.update(room.fullName, updateRoom).then(data => {
       const room = data.room;
       const newRooms = roomList.map(r => {
-        if(r.fullName === room.fullName) {
+        if (r.fullName === room.fullName) {
           return room;
         }
         return r;
-      }).catch(error => {
-      
-      });
+      })
       setRoomList(newRooms);
     })
   }
@@ -116,7 +112,7 @@ export default function Renting() {
     try {
       const data = await backendApi.Room.getRoom(fullName);
       return data.room;
-    } catch(error) {
+    } catch (error) {
 
     }
   }
@@ -124,7 +120,7 @@ export default function Renting() {
   const updateFeeOfRoom = async (fullName) => {
     const room = await getRoomInformation(fullName);
     const newRooms = roomList.map(r => {
-      if(r.fullName === room.fullName) {
+      if (r.fullName === room.fullName) {
         return room;
       }
       return r;
@@ -136,12 +132,10 @@ export default function Renting() {
     backendApi.Room.update(fullName, body).then(data => {
       const room = data.room;
       const newRooms = roomList.map(r => {
-        if(r.fullName === room.fullName) {
+        if (r.fullName === room.fullName) {
           return room;
         }
         return r;
-      }).catch(error => {
-
       });
       setRoomList(newRooms);
     })
@@ -152,23 +146,23 @@ export default function Renting() {
       <div className="container-fluid">
         <div className="row">
           <div className="col-8">
-          <select className="ms-4 mb-2 fs-4" style={{width: "150px", height: "40px"}} defaultValue='Nhà cũ' onChange={handleChooseHouseTypeChanged}>
-            <option value="Nhà cũ">Nhà cũ</option>
-            <option value="Nhà mới">Nhà mới</option>
-          </select>
-          <div className="container-fluid">
-            <div className="row">
-            {
-              roomList.filter(it => it.houseType === choosedHouseType).map((room, index) => <RoomPreview key={index} status={status} room={room}
-                handleCheckinRoom={handleCheckinRoom}
-                handleChooseRoomChanged={handleChooseRoomChanged}
-                handleStatusChanged={handleStatusChanged}
-                handleCheckoutRoom={handleCheckoutRoom}
-                handleCleanRoomClick={handleCleanRoomClick}
-              />)
-            }
+            <select className="ms-4 mb-2 fs-4" style={{ width: "150px", height: "40px" }} defaultValue='Nhà cũ' onChange={handleChooseHouseTypeChanged}>
+              <option value="Nhà cũ">Nhà cũ</option>
+              <option value="Nhà mới">Nhà mới</option>
+            </select>
+            <div className="container-fluid">
+              <div className="row">
+                {
+                  roomList.filter(it => it.houseType === choosedHouseType).map((room, index) => <RoomPreview key={index} status={status} room={room}
+                    handleCheckinRoom={handleCheckinRoom}
+                    handleChooseRoomChanged={handleChooseRoomChanged}
+                    handleStatusChanged={handleStatusChanged}
+                    handleCheckoutRoom={handleCheckoutRoom}
+                    handleCleanRoomClick={handleCleanRoomClick}
+                  />)
+                }
+              </div>
             </div>
-          </div>
           </div>
           {
             status === RENTING.INFOMATION ?
