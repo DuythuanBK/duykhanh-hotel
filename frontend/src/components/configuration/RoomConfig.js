@@ -7,18 +7,18 @@ const EDITING_STATUS = {
   EDIT: 2
 }
 
-function MainDisplay({items, houseTypes, 
-                      updateChanging, handleEditClick, 
-                      handleDeleteClick}) {
-  
+function MainDisplay({ items, houseTypes,
+  updateChanging, handleEditClick,
+  handleDeleteClick }) {
+
   const [choosedHouseType, setChoosedHouseType] = useState('Nhà cũ');
-  
+
   useEffect(() => {
   }, [])
 
   const handleChoosedHousetypeChanged = (e) => {
     setChoosedHouseType(e.target.value);
-  } 
+  }
 
   function _handleAddClick() {
     updateChanging(EDITING_STATUS.ADD);
@@ -31,42 +31,42 @@ function MainDisplay({items, houseTypes,
 
   return (
     <div className="col-8">
-    <div className="d-flex">
-      <button type="button" className="btn btn-primary" onClick={_handleAddClick}>Thêm</button>
-      <select className="ms-5 me-5 w-25 form-select" id="roomtype" onChange={handleChoosedHousetypeChanged}>
-      {
-        houseTypes.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)
-      }
-      </select>
+      <div className="d-flex">
+        <button type="button" className="btn btn-primary" onClick={_handleAddClick}>Thêm</button>
+        <select className="ms-5 me-5 w-25 form-select" id="roomtype" onChange={handleChoosedHousetypeChanged}>
+          {
+            houseTypes.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)
+          }
+        </select>
       </div>
-      <div className="overflow-scroll" style={{height: '90vh'}}>
-          <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Thứ tự</th>
-                  <th scope="col">Loại phòng</th>
-                  <th scope="col">Kiểu nhà</th>
-                  <th scope="col">Giá phòng thường</th>
-                  <th scope="col">Giá phòng điều hòa</th>
-                  <th scope="col">Tên phòng</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-    
-                  items.filter(it => it.houseType === choosedHouseType).map((item, index) => <Item key={index} index={index+1} item={item} handleEditClick={_handleEditClick} handleDeleteClick={handleDeleteClick}/>) 
+      <div className="overflow-scroll" style={{ height: '90vh' }}>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Thứ tự</th>
+              <th scope="col">Loại phòng</th>
+              <th scope="col">Kiểu nhà</th>
+              <th scope="col">Giá phòng thường</th>
+              <th scope="col">Giá phòng điều hòa</th>
+              <th scope="col">Tên phòng</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
 
-                }
-              </tbody>
-            </table>
+              items.filter(it => it.houseType === choosedHouseType).map((item, index) => <Item key={index} index={index + 1} item={item} handleEditClick={_handleEditClick} handleDeleteClick={handleDeleteClick} />)
+
+            }
+          </tbody>
+        </table>
       </div>
     </div>
   )
 }
 
-function Editing({status, item, roomPriceList, roomTypeList, 
-                  houseTypeList, updateChanging, handleFinishEdit}) {
+function Editing({ status, item, roomPriceList, roomTypeList,
+  houseTypeList, updateChanging, handleFinishEdit }) {
   const [name, setName] = useState(status === EDITING_STATUS.EDIT ? item.name : '');
   const [roomType, setRoomType] = useState(status === EDITING_STATUS.EDIT ? item.roomType : '');
   const [houseType, setHouseType] = useState(status === EDITING_STATUS.EDIT ? item.houseType : '');
@@ -74,8 +74,8 @@ function Editing({status, item, roomPriceList, roomTypeList,
   const [coldPrice, setColdPrice] = useState(status === EDITING_STATUS.EDIT ? item.coldPrice : '');
 
 
-  useEffect(()=>{
-    if(status === EDITING_STATUS.ADD) {
+  useEffect(() => {
+    if (status === EDITING_STATUS.ADD) {
       setRoomType(roomTypeList[0].name);
       setNormalPrice(roomPriceList[0].name);
       setColdPrice(roomPriceList[0].name);
@@ -84,7 +84,7 @@ function Editing({status, item, roomPriceList, roomTypeList,
   }, [status, roomTypeList, roomPriceList, houseTypeList])
 
   function validateInput() {
-    if(name === "" || name === undefined) {
+    if (name === "" || name === undefined) {
       return false;
     }
 
@@ -92,20 +92,20 @@ function Editing({status, item, roomPriceList, roomTypeList,
   }
 
   function handleEditClick() {
-    if(validateInput()) {
+    if (validateInput()) {
       let newItem = item;
       newItem.name = name;
       newItem.roomType = roomType;
       newItem.houseType = houseType;
       newItem.normalPrice = normalPrice;
       newItem.coldPrice = coldPrice;
-  
+
       handleFinishEdit(newItem);
       updateChanging(EDITING_STATUS.NONE);
     } else {
 
     }
-    
+
   }
 
   function handleCancelClick() {
@@ -132,55 +132,55 @@ function Editing({status, item, roomPriceList, roomTypeList,
     setColdPrice(event.target.value);
   }
 
-  return(
+  return (
     <div className="col-4">
-        <form className="row g-3">
-            <div className="col-md-6">
-              <label htmlFor="name" className="form-label">Tên</label>
-              <input type="" className="form-control" id="name" value={name} onChange={handleNameChange}/>
-            </div>
-            <div className="col-md-6">
-              <label htmlFor="roomtype" className="form-label">Loại phòng</label>
-              <select className="form-select" id="roomtype" onChange={handleRoomTypeChange}>
-                {
-                  roomTypeList.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)
-                }
-              </select>
-            </div>
-            <div className="col-md-6">
-              <label htmlFor="housetype" className="form-label">Kiểu nhà</label>
-              <select className="form-select" id="housetype" onChange={handleHouseTypeChange}>
-                {
-                  houseTypeList.map((item, index)  => <option key={index} value={item.name}>{item.name}</option>)
-                }
-              </select>
-            </div>
-            <div className="col-md-6">
-              <label htmlFor="normalPrice" className="form-label">Giá phòng thường</label>
-              <select className="form-select" id="normalPrice" onChange={handleNormalPriceChange}>
-                {
-                  roomPriceList.filter(it => !it.name.includes("ĐH")).map((item, index)  => <option key={index} value={item.name}>{item.name}</option>)
-                }
-              </select>
-            </div>
-            <div className="col-md-6">
-              <label htmlFor="coldPrice" className="form-label">Giá phòng điều hòa</label>
-              <select className="form-select" id="coldPrice" onChange={handleColdPriceChange}>
-                {
-                  roomPriceList.filter(it => it.name.includes("ĐH")).map((item, index)  => <option key={index} value={item.name}>{item.name}</option>)
-                }
-              </select>
-            </div>
-            <div className="col-md-12 d-flex justify-content-center">
-                <button type="button" className="btn btn-primary me-1 w-25" onClick={handleEditClick}>{status === EDITING_STATUS.ADD ? 'Thêm' : 'Sửa'}</button>
-                <button type="button" className="btn btn-primary ms-1 w-25" onClick={handleCancelClick}>Hủy</button>
-            </div>
-        </form>
+      <form className="row g-3">
+        <div className="col-md-6">
+          <label htmlFor="name" className="form-label">Tên</label>
+          <input type="" className="form-control" id="name" value={name} onChange={handleNameChange} />
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="roomtype" className="form-label">Loại phòng</label>
+          <select className="form-select" id="roomtype" onChange={handleRoomTypeChange}>
+            {
+              roomTypeList.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)
+            }
+          </select>
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="housetype" className="form-label">Kiểu nhà</label>
+          <select className="form-select" id="housetype" onChange={handleHouseTypeChange}>
+            {
+              houseTypeList.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)
+            }
+          </select>
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="normalPrice" className="form-label">Giá phòng thường</label>
+          <select className="form-select" id="normalPrice" onChange={handleNormalPriceChange}>
+            {
+              roomPriceList.filter(it => !it.name.includes("ĐH")).map((item, index) => <option key={index} value={item.name}>{item.name}</option>)
+            }
+          </select>
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="coldPrice" className="form-label">Giá phòng điều hòa</label>
+          <select className="form-select" id="coldPrice" onChange={handleColdPriceChange}>
+            {
+              roomPriceList.filter(it => it.name.includes("ĐH")).map((item, index) => <option key={index} value={item.name}>{item.name}</option>)
+            }
+          </select>
+        </div>
+        <div className="col-md-12 d-flex justify-content-center">
+          <button type="button" className="btn btn-primary me-1 w-25" onClick={handleEditClick}>{status === EDITING_STATUS.ADD ? 'Thêm' : 'Sửa'}</button>
+          <button type="button" className="btn btn-primary ms-1 w-25" onClick={handleCancelClick}>Hủy</button>
+        </div>
+      </form>
     </div>
   )
 }
 
-function Item({index, item, handleEditClick, handleDeleteClick}){
+function Item({ index, item, handleEditClick, handleDeleteClick }) {
 
   function _handleEditClick(item) {
     handleEditClick(item);
@@ -215,15 +215,15 @@ export default function RoomConfig() {
   const [houseTypes, setHouseTypes] = useState([]);
 
   useEffect(() => {
-    try {
-      backendApi.RoomConfig.getAll().then(data => updateItems(data.roomConfigs));
-      backendApi.HouseType.getAll().then(data => setHouseTypes(data.houseTypes));
-      backendApi.RoomType.getAll().then(data => setRoomTypes(data.roomTypes));
-      backendApi.RoomPrice.getAll().then(data => setRoomPrices(data.roomPrices));
+    backendApi.RoomConfig.getAll().then(data => updateItems(data.roomConfigs)).catch(error => {
+    });
+    backendApi.HouseType.getAll().then(data => setHouseTypes(data.houseTypes)).catch(error => {
+    });
+    backendApi.RoomType.getAll().then(data => setRoomTypes(data.roomTypes)).catch(error => {
+    });
+    backendApi.RoomPrice.getAll().then(data => setRoomPrices(data.roomPrices)).catch(error => {
+    });
       
-    } catch(e) {
-
-    }
   }, []);
 
   function updateChanging(status) {
@@ -243,7 +243,7 @@ export default function RoomConfig() {
   function handleUpdateItemList(item) {
     backendApi.RoomConfig.update(item);
     let newItems = items.map(it => {
-      if(item.id === it.id) {
+      if (item.id === it.id) {
         it.name = item.name;
       }
       return it;
@@ -259,9 +259,9 @@ export default function RoomConfig() {
   }
 
   function handleFinishEdit(item) {
-    if(editingStatus === EDITING_STATUS.ADD) {
+    if (editingStatus === EDITING_STATUS.ADD) {
       handleAddItem(item);
-    } else if(editingStatus === EDITING_STATUS.EDIT) {
+    } else if (editingStatus === EDITING_STATUS.EDIT) {
       handleUpdateItemList(item);
     }
   }
@@ -270,18 +270,18 @@ export default function RoomConfig() {
     <div className="row">
       <div className="container-fluid">
         <div className="row">
-          <MainDisplay items={items} houseTypes={houseTypes} updateChanging={updateChanging}  
+          <MainDisplay items={items} houseTypes={houseTypes} updateChanging={updateChanging}
             handleEditClick={handleEditClick} handleDeleteClick={handleDeleteClick}
           />
-          { editingStatus !== EDITING_STATUS.NONE ? 
-            <Editing  status={editingStatus} 
-                      item={editingItem} 
-                      roomPriceList={roomPrices}
-                      roomTypeList={roomTypes}
-                      houseTypeList={houseTypes}
-                      updateChanging={updateChanging} 
-                      handleFinishEdit={handleFinishEdit} /> : 
-            <></> }
+          {editingStatus !== EDITING_STATUS.NONE ?
+            <Editing status={editingStatus}
+              item={editingItem}
+              roomPriceList={roomPrices}
+              roomTypeList={roomTypes}
+              houseTypeList={houseTypes}
+              updateChanging={updateChanging}
+              handleFinishEdit={handleFinishEdit} /> :
+            <></>}
         </div>
       </div>
     </div>

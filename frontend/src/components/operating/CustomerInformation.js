@@ -44,6 +44,8 @@ export default function CustomerInformation({room}) {
       if(customer.numberplate !==null) {
         setNumberplate(customer.numberplate);
       }
+    }).catch(error => {
+      
     })
   }, [room.fullName])
 

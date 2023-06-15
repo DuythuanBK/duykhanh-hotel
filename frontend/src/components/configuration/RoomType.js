@@ -103,7 +103,7 @@ export default function RoomType() {
   const [editingItem, setEditingItem] = useState({ name: '' })
 
   useEffect(() => {
-    backendApi.RoomType.getAll().then(data => updateItems(data.roomTypes));
+    backendApi.RoomType.getAll().then(data => updateItems(data.roomTypes)).catch(error => {});
   }, [])
 
   function updateChanging(status) {

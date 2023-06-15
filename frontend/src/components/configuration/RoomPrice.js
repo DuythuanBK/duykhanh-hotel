@@ -144,7 +144,7 @@ export default function RoomPrice() {
   const [editingItem, setEditingItem] = useState({ name: '' })
 
   useEffect(() => {
-    backendApi.RoomPrice.getAll().then(data => updateItems(data.roomPrices));
+    backendApi.RoomPrice.getAll().then(data => updateItems(data.roomPrices)).catch(error => {});
   }, [])
 
   function updateChanging(status) {

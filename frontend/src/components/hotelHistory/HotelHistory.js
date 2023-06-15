@@ -39,7 +39,8 @@ export default function HotelHistory() {
     backendApi.RoomHistory.get(params, page).then(data => {
       setCounts(data.counts);
       setRooms(data.rooms);
-
+    }).catch(error => {
+      
     })
   }
 

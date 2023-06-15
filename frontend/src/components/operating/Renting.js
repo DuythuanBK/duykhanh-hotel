@@ -36,14 +36,11 @@ export default function Renting() {
   const [choosedRoom, setChoosedRoom] = useState('');
   const [choosedHouseType, setChoosedHouseType] = useState('Nhà cũ');
 
+  let timerIDs = new Map();
+
   useState(() => {
-    try {
       backendApi.Room.getAll().then(data => setRoomList(data.rooms)).catch(error => {
-        console.log(error);
       })
-    } catch(error) {
-      console.log(error)
-    }
   }, []);
 
   const handleStatusChanged = (newStatus) => {
@@ -70,8 +67,12 @@ export default function Renting() {
           return r;
         }
         
-      })
+      });
+      const id = setInterval(updateFeeOfRoom(room.fullName), 900000);
+      timerIDs.set(room.fullName, id);
       setRoomList(rooms);
+    }).catch(error => {
+
     })
   }
 
@@ -83,8 +84,12 @@ export default function Renting() {
         } else {
           return r;
         }
-        
+      }).catch(error => {
+      
       })
+
+      const id = timerIDs.get(room.fullName);
+      clearTimeout(id);
       setRoomList(rooms);
     })
   }
@@ -100,15 +105,20 @@ export default function Renting() {
           return room;
         }
         return r;
+      }).catch(error => {
+      
       });
       setRoomList(newRooms);
     })
   }
 
   const getRoomInformation = async (fullName) => {
-    const data = await backendApi.Room.getRoom(fullName);
-    console.log(data);
-    return data.room;
+    try {
+      const data = await backendApi.Room.getRoom(fullName);
+      return data.room;
+    } catch(error) {
+
+    }
   }
 
   const updateFeeOfRoom = async (fullName) => {
@@ -130,6 +140,8 @@ export default function Renting() {
           return room;
         }
         return r;
+      }).catch(error => {
+
       });
       setRoomList(newRooms);
     })

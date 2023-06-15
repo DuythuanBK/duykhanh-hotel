@@ -27,6 +27,8 @@ export default function OrderInformation({room, handleStatusChanged}) {
   useEffect(() => {
     backendApi.Order.getAll(room.fullName).then(data => {
       setItems(data.items)
+    }).catch(error => {
+      
     })
   }, [room.fullName])
 

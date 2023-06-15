@@ -111,10 +111,9 @@ export default function HouseType() {
   useEffect(() => {
     backendApi.HouseType.getAll().then(data => {
       if('houseTypes' in data) {
-        console.log(data.houseTypes);
         updateItems(data.houseTypes);
       }
-    })
+    }).catch(error => {})
     }, []);
 
   function updateChanging(status) {

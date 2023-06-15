@@ -116,7 +116,7 @@ export default function MenuConfig() {
   const [editingItem, setEditingItem] = useState({name: '', price: ''})
 
   useEffect(() => {
-    backendApi.Item.getAll().then(data => updateItems(data.items));
+    backendApi.Item.getAll().then(data => updateItems(data.items)).catch(error => {});
 
     return () => {};
   }, [])

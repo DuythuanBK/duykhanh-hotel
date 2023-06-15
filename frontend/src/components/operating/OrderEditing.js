@@ -118,10 +118,14 @@ export function OrderEditing({ room, handleStatusChanged, updateFeeOfRoom }) {
   useEffect(() => {
     backendApi.Order.getAll(room.fullName).then(data => {
       setOrders(data.items)
+    }).catch(error => {
+
     });
 
     backendApi.Item.getAll().then(data => {
       setMenu(data.items)
+    }).catch(error => {
+      
     })
   }, [room.fullName])
 
